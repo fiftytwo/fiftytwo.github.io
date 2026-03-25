@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FIFTYTWO Games</title>
+    <meta
+      name="description"
+      content="FIFTYTWO Games is getting ready. A new site is on the way."
+    />
+    <style>
+      :root {
+        --panel: rgba(10, 23, 18, 0.72);
+        --panel-border: rgba(173, 255, 205, 0.16);
+        --text: #f2f6ef;
+        --muted: #b0c4b2;
+        --accent: #c6ff5e;
+        --accent-strong: #8eff64;
+        --shadow: rgba(0, 0, 0, 0.35);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(142, 255, 100, 0.14), transparent 35%),
+          radial-gradient(circle at 80% 20%, rgba(198, 255, 94, 0.1), transparent 28%),
+          linear-gradient(145deg, #081711 0%, #06110d 45%, #020806 100%);
+        overflow: hidden;
+      }
+
+      .stage {
+        position: relative;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 32px;
+        isolation: isolate;
+      }
+
+      .stage::before,
+      .stage::after {
+        content: "";
+        position: absolute;
+        inset: auto;
+        border-radius: 28px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0));
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 24px 60px var(--shadow);
+        opacity: 0.25;
+        z-index: -1;
+      }
+
+      .stage::before {
+        width: 180px;
+        height: 250px;
+        top: 12vh;
+        right: 9vw;
+        transform: rotate(14deg);
+      }
+
+      .stage::after {
+        width: 160px;
+        height: 228px;
+        bottom: 10vh;
+        left: 8vw;
+        transform: rotate(-12deg);
+      }
+
+      .card {
+        width: min(100%, 780px);
+        padding: 48px;
+        border-radius: 32px;
+        background: var(--panel);
+        border: 1px solid var(--panel-border);
+        backdrop-filter: blur(18px);
+        box-shadow:
+          0 20px 50px var(--shadow),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(198, 255, 94, 0.08);
+        color: var(--accent);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--accent-strong);
+        box-shadow: 0 0 18px rgba(142, 255, 100, 0.65);
+      }
+
+      h1 {
+        margin: 22px 0 16px;
+        font-size: clamp(2.8rem, 9vw, 6.5rem);
+        line-height: 0.92;
+        letter-spacing: -0.06em;
+      }
+
+      p {
+        margin: 0;
+        max-width: 34rem;
+        color: var(--muted);
+        font-size: clamp(1rem, 2.4vw, 1.2rem);
+        line-height: 1.65;
+      }
+
+      .accent {
+        color: var(--accent);
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .chip {
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        font-size: 0.92rem;
+      }
+
+      @media (max-width: 680px) {
+        body {
+          overflow: auto;
+        }
+
+        .stage {
+          padding: 18px;
+        }
+
+        .card {
+          padding: 28px 22px 72px;
+          border-radius: 24px;
+        }
+
+        .stage::before,
+        .stage::after {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="stage">
+      <section class="card" aria-labelledby="site-title">
+        <div class="eyebrow">Coming Online</div>
+        <h1 id="site-title">FIFTYTWO<br /><span class="accent">Games</span></h1>
+        <p>
+          A fresh home for the studio is in progress. The domain is live, the
+          table is set, and the first hand is about to be dealt.
+        </p>
+        <div class="meta" aria-label="Site status">
+          <div class="chip">Site in progress</div>
+          <div class="chip">fiftytwo.games</div>
+        </div>
+      </section>
+    </main>
+  </body>
+  </html>
