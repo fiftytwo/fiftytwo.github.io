@@ -147,7 +147,7 @@
         font-size: 0.92rem;
       }
 
-      .js-demo {
+      .store-panel {
         margin-top: 28px;
         padding: 18px;
         border: 1px solid rgba(255, 255, 255, 0.09);
@@ -155,16 +155,19 @@
         background: rgba(255, 255, 255, 0.03);
       }
 
-      .js-demo p {
+      .store-panel p {
         max-width: none;
       }
 
-      .js-status {
-        margin-bottom: 14px;
+      .platform-note {
+        margin-bottom: 18px;
         font-size: 0.95rem;
       }
 
-      .test-button {
+      .primary-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         appearance: none;
         border: 0;
         padding: 12px 16px;
@@ -173,18 +176,50 @@
         color: #0a140e;
         font: inherit;
         font-weight: 700;
+        text-decoration: none;
         cursor: pointer;
         transition: transform 120ms ease, box-shadow 120ms ease;
         box-shadow: 0 12px 30px rgba(198, 255, 94, 0.2);
       }
 
-      .test-button:hover {
+      .primary-cta:hover {
         transform: translateY(-1px);
         box-shadow: 0 16px 34px rgba(198, 255, 94, 0.26);
       }
 
-      .test-button:active {
+      .primary-cta:active {
         transform: translateY(1px);
+      }
+
+      .store-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .store-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        font-size: 0.92rem;
+        text-decoration: none;
+      }
+
+      .store-link:hover {
+        border-color: rgba(198, 255, 94, 0.32);
+        background: rgba(198, 255, 94, 0.08);
+      }
+
+      .store-link[aria-current="true"] {
+        border-color: rgba(198, 255, 94, 0.42);
+        background: rgba(198, 255, 94, 0.12);
+        color: var(--accent);
       }
 
       @media (max-width: 680px) {
@@ -221,29 +256,99 @@
           <div class="chip">Site in progress</div>
           <div class="chip">fiftytwo.games</div>
         </div>
-        <div class="js-demo" aria-live="polite">
-          <p class="js-status" id="js-status">JavaScript status: waiting for script...</p>
-          <button class="test-button" id="js-test-button" type="button">
-            Test JavaScript
-          </button>
+        <div class="store-panel" aria-live="polite">
+          <p class="platform-note" id="platform-note">
+            Detecting your platform to suggest the best store...
+          </p>
+          <a class="primary-cta" id="primary-store-link" href="#all-platforms">
+            View All Platforms
+          </a>
+          <div class="store-list" id="all-platforms" aria-label="Store links">
+            <a class="store-link" href="https://example.com/ios" data-platform-link="iOS">
+              App Store
+            </a>
+            <a class="store-link" href="https://example.com/android" data-platform-link="Android">
+              Google Play
+            </a>
+            <a class="store-link" href="https://example.com/windows" data-platform-link="Windows">
+              Windows
+            </a>
+            <a class="store-link" href="https://example.com/macos" data-platform-link="macOS">
+              macOS
+            </a>
+            <a class="store-link" href="https://example.com/linux" data-platform-link="Linux">
+              Linux
+            </a>
+          </div>
         </div>
         <noscript>
-          <p>JavaScript is disabled in this browser.</p>
+          <p>JavaScript is disabled, so the store selection stays manual.</p>
         </noscript>
       </section>
     </main>
     <script>
-      const status = document.getElementById("js-status");
-      const button = document.getElementById("js-test-button");
-      let clicks = 0;
+      // Replace these example URLs with the real storefront links for your game.
+      const stores = {
+        iOS: {
+          label: "Open in App Store",
+          url: "https://example.com/ios",
+        },
+        Android: {
+          label: "Open in Google Play",
+          url: "https://example.com/android",
+        },
+        Windows: {
+          label: "Open for Windows",
+          url: "https://example.com/windows",
+        },
+        macOS: {
+          label: "Open for macOS",
+          url: "https://example.com/macos",
+        },
+        Linux: {
+          label: "Open for Linux",
+          url: "https://example.com/linux",
+        },
+        Unknown: {
+          label: "View All Platforms",
+          url: "#all-platforms",
+        },
+      };
 
-      if (status && button) {
-        const startedAt = new Date().toLocaleTimeString();
-        status.textContent = `JavaScript status: running. Loaded at ${startedAt}. Clicks: ${clicks}.`;
+      function detectOS() {
+        const ua = navigator.userAgent || "";
+        const platform = navigator.userAgentData?.platform || navigator.platform || "";
 
-        button.addEventListener("click", () => {
-          clicks += 1;
-          status.textContent = `JavaScript status: running. Loaded at ${startedAt}. Clicks: ${clicks}.`;
+        if (/android/i.test(ua)) return "Android";
+        if (/iPhone|iPad|iPod/i.test(ua)) return "iOS";
+        if (platform === "MacIntel" && navigator.maxTouchPoints > 1) return "iOS";
+        if (/Win/i.test(platform)) return "Windows";
+        if (/Mac/i.test(platform)) return "macOS";
+        if (/Linux/i.test(platform)) return "Linux";
+
+        return "Unknown";
+      }
+
+      const detectedOS = detectOS();
+      const primaryLink = document.getElementById("primary-store-link");
+      const platformNote = document.getElementById("platform-note");
+      const storeLinks = document.querySelectorAll("[data-platform-link]");
+
+      if (primaryLink && platformNote) {
+        const selectedStore = stores[detectedOS] || stores.Unknown;
+        primaryLink.href = selectedStore.url;
+        primaryLink.textContent = selectedStore.label;
+
+        if (detectedOS === "Unknown") {
+          platformNote.textContent = "We could not detect your platform, so all store links are shown below.";
+        } else {
+          platformNote.textContent = `Detected platform: ${detectedOS}. The main button now points to the best match.`;
+        }
+
+        storeLinks.forEach((link) => {
+          if (link.dataset.platformLink === detectedOS) {
+            link.setAttribute("aria-current", "true");
+          }
         });
       }
     </script>
