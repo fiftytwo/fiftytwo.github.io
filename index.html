@@ -147,6 +147,46 @@
         font-size: 0.92rem;
       }
 
+      .js-demo {
+        margin-top: 28px;
+        padding: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .js-demo p {
+        max-width: none;
+      }
+
+      .js-status {
+        margin-bottom: 14px;
+        font-size: 0.95rem;
+      }
+
+      .test-button {
+        appearance: none;
+        border: 0;
+        padding: 12px 16px;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #0a140e;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 120ms ease, box-shadow 120ms ease;
+        box-shadow: 0 12px 30px rgba(198, 255, 94, 0.2);
+      }
+
+      .test-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 16px 34px rgba(198, 255, 94, 0.26);
+      }
+
+      .test-button:active {
+        transform: translateY(1px);
+      }
+
       @media (max-width: 680px) {
         body {
           overflow: auto;
@@ -181,7 +221,31 @@
           <div class="chip">Site in progress</div>
           <div class="chip">fiftytwo.games</div>
         </div>
+        <div class="js-demo" aria-live="polite">
+          <p class="js-status" id="js-status">JavaScript status: waiting for script...</p>
+          <button class="test-button" id="js-test-button" type="button">
+            Test JavaScript
+          </button>
+        </div>
+        <noscript>
+          <p>JavaScript is disabled in this browser.</p>
+        </noscript>
       </section>
     </main>
+    <script>
+      const status = document.getElementById("js-status");
+      const button = document.getElementById("js-test-button");
+      let clicks = 0;
+
+      if (status && button) {
+        const startedAt = new Date().toLocaleTimeString();
+        status.textContent = `JavaScript status: running. Loaded at ${startedAt}. Clicks: ${clicks}.`;
+
+        button.addEventListener("click", () => {
+          clicks += 1;
+          status.textContent = `JavaScript status: running. Loaded at ${startedAt}. Clicks: ${clicks}.`;
+        });
+      }
+    </script>
   </body>
   </html>
